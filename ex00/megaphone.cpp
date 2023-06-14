@@ -2,7 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-	std::string str;
 	size_t i = 1;
 	size_t j = 0;
 
@@ -14,14 +13,13 @@ int main(int argc, char *argv[])
 
 	while (argv[i])
 	{
-		str = argv[i];
 		j = 0;
-		while (str[j])
+		while (argv[i][j])
 		{
-			str[j] = std::toupper(str[j]);
+			argv[i][j] = std::toupper(argv[i][j]);
 			j++;
 		}
-		std::cout << str;
+		std::cout << argv[i];
 		i++;
 	}
 	std::cout << std::endl;

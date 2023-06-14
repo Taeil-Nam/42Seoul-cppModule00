@@ -70,8 +70,7 @@ void PhoneBook::Search()
 	std::getline(std::cin, selectedIndexString);
 	ss << selectedIndexString;
 	ss >> selectedIndex;
-	if (selectedIndex < 0 || selectedIndex > 7
-		|| (_isFull == false && selectedIndex >= _contactIndex))
+	if (selectedIndex > 7 || (_isFull == false && selectedIndex >= _contactIndex))
 	{
 		std::cout << "Invalid index selected" << std::endl;
 		return;

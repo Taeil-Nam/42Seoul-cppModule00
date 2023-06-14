@@ -1,77 +1,134 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <sstream>
+#include "PhoneBook.h"
 
-class Contact
+PhoneBook::PhoneBook() : _contactIndex(0), _contact(NULL), _isFull(false) {}
+
+void PhoneBook::Add()
 {
-public:
-	std::string _firstName;
-	std::string _lastName;
-	std::string _nickName;
-	std::string _phoneNumber;
-	std::string _DarkestSecret;
-};
+	Contact contactBackup;
 
-class PhoneBook
+	_contact = &(_contacts[_contactIndex]);
+	contactBackup = *(_contact);
+
+	_contact->SetFirstName();
+	_contact->SetLastName();
+	_contact->SetNickName();
+	_contact->SetPhoneNumber();
+	_contact->SetDarkestSecret();
+
+	if (IsEmptyContact(_contact) == true)
+	{
+		*(_contact) = contactBackup;
+		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
+		return;
+	}
+	else
+	{
+		_contactIndex++;
+		if (_contactIndex >= 8)
+		{
+			_isFull = true;
+			_contactIndex = 0;
+		}
+	}
+}
+
+bool PhoneBook::IsEmptyContact(Contact* contact)
 {
-public:
-	PhoneBook()
-	{
-		_contactCount = 0;
-	}
-	void Add()
-	{
-		std::cout << "Enter the First name : ";
-		std::cin >> _contacts[_contactCount]._firstName;
-		std::cout << "Enter the Last name : ";
-		std::cin >> _contacts[_contactCount]._lastName;
-		std::cout << "Enter the Nick name : ";
-		std::cin >> _contacts[_contactCount]._nickName;
-		std::cout << "Enter the Phone number : ";
-		std::cin >> _contacts[_contactCount]._phoneNumber;
-		std::cout << "Enter the Darkest secret : ";
-		std::cin >> _contacts[_contactCount]._DarkestSecret;
-		_contactCount++;
-		if (_contactCount >= 8)
-			_contactCount = 0;
-	}
-	void Search()
-	{
-		
-	}
-private:
-	int _contactCount;
-	Contact _contacts[8];
-};
+	if (contact->GetFirstName() == "" || contact->GetLastName() == ""
+		|| contact->GetNickName() == "" || contact->GetPhoneNumber() == ""
+		|| contact->GetDarkestSecret() == "")
+		return true;
+	return false;
+}
 
-int main(int argc, char *argv[])
+void PhoneBook::Search()
 {
-	PhoneBook phoneBook;
-	std::string input;
+	size_t end_i;
+	std::string selectedIndexString;
+	size_t		selectedIndex;
+	std::stringstream ss;
 
-	while(true)
+	if (_isFull == false && _contactIndex == 0)
 	{
-		std::cout << "Enter the command (ADD, SEARCH, EXIT) : ";
-		std::cin >> input;
-
-		if (std::cin.eof())
-			break;
-		else if (input == "ADD")
-		{
-			phoneBook.Add();
-		}
-		else if (input == "SEARCH")
-		{
-			phoneBook.Search();
-		}
-		else if (input == "EXIT")
-		{
-			std::cout << "EXIT" << std::endl;
-			return 0;
-		}
-		else
-		{
-			std::cout << "Not support command: " << input << std::endl << std::endl;
-		}
+		std::cout << "There is no contact. You should add contact first." << std::endl;
+		return;
 	}
+
+	if (_isFull)
+		end_i =	8;
+	else
+		end_i = _contactIndex;
+
+	for (size_t i = 0; i < end_i; i++)
+		PrintContactsList(i);
+	
+	std::cout << "Select index : ";
+	std::getline(std::cin, selectedIndexString);
+	ss << selectedIndexString;
+	ss >> selectedIndex;
+	if (selectedIndex < 0 || selectedIndex > 7
+		|| (_isFull == false && selectedIndex >= _contactIndex))
+	{
+		std::cout << "Invalid index selected" << std::endl;
+		return;
+	}
+	else
+		PrintContactInfo(selectedIndex);
+}
+
+void PhoneBook::PrintContactsList(size_t i)
+{
+	Contact contact;
+	std::string str;
+
+	contact = _contacts[i];
+
+	// 1. index
+	std::cout << std::setfill(' ') << std::setw(10) << i << " | ";
+
+	// 2. first name
+	str = contact.GetFirstName();
+	if (str.size() >= 10)
+	{
+		str[9] = '.';
+		str.resize(10);
+	}
+	std::cout << std::setfill(' ') << std::setw(10) << str << " | ";
+
+	// 3. last name
+	str = contact.GetLastName();
+	if (str.size() >= 10)
+	{
+		str[9] = '.';
+		str.resize(10);
+	}
+	std::cout << std::setfill(' ') << std::setw(10) << str << " | ";
+
+	// 4. nickname
+	str = contact.GetNickName();
+	if (str.size() >= 10)
+	{
+		str[9] = '.';
+		str.resize(10);
+	}
+	std::cout << std::setfill(' ') << std::setw(10) << str << std::endl;
+}
+
+void PhoneBook::PrintContactInfo(size_t i)
+{
+	std::cout << "First name : " << _contacts[i].GetFirstName() << std::endl;
+	std::cout << "Last name : " << _contacts[i].GetLastName() << std::endl;
+	std::cout << "Nickname : " << _contacts[i].GetNickName() << std::endl;
+	std::cout << "Phone Number : " << _contacts[i].GetPhoneNumber() << std::endl;
+	std::cout << "Darkest secret : " << _contacts[i].GetDarkestSecret() << std::endl;
+}
+
+int PhoneBook::Exit()
+{
+	std::cout << "Exit" << std::endl;
 	return 0;
 }

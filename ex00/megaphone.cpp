@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+	std::string str;
 	size_t i = 1;
 	size_t j = 0;
 
@@ -13,14 +14,14 @@ int main(int argc, char *argv[])
 
 	while (argv[i])
 	{
+		str = argv[i];
 		j = 0;
-		while (argv[i][j])
+		while (str[j])
 		{
-			if ('a' <= argv[i][j] && argv[i][j] <= 'z')
-				argv[i][j] -= 32;
+			str[j] = std::toupper(str[j]);
 			j++;
 		}
-		std::cout << argv[i];
+		std::cout << str;
 		i++;
 	}
 	std::cout << std::endl;

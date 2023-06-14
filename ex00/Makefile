@@ -6,7 +6,7 @@
 #    By: tnam <tnam@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/09 14:57:14 by tnam              #+#    #+#              #
-#    Updated: 2023/06/14 14:15:45 by tnam             ###   ########.fr        #
+#    Updated: 2023/06/14 14:59:16 by tnam             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS			=	$(SRCS:.cpp=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAG) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME)
 
 %.o: %.cpp
 	$(CC) $(CFLAG) -c $< -o $@

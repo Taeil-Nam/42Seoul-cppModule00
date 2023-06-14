@@ -47,9 +47,9 @@ bool PhoneBook::IsEmptyContact(Contact* contact)
 
 void PhoneBook::Search()
 {
-	size_t end_i;
+	size_t contactsSize;
 	std::string selectedIndexString;
-	size_t		selectedIndex;
+	size_t selectedIndex;
 	std::stringstream ss;
 
 	if (_isFull == false && _contactIndex == 0)
@@ -59,15 +59,26 @@ void PhoneBook::Search()
 	}
 
 	if (_isFull)
-		end_i =	8;
+		contactsSize =	8;
 	else
-		end_i = _contactIndex;
+		contactsSize = _contactIndex;
 
-	for (size_t i = 0; i < end_i; i++)
+	// 1. Print contacts info
+	std::cout << std::setw(10) << "INDEX" << " | ";
+	std::cout << std::setw(10) << "FIRST NAME" << " | ";
+	std::cout << std::setw(10) << "LAST NAME" << " | ";
+	std::cout << std::setw(10) << "NICKNAME" << std::endl;
+	for (size_t i = 0; i < contactsSize; i++)
 		PrintContactsList(i);
 	
+	// 2. Select index from user
 	std::cout << "Select index : ";
 	std::getline(std::cin, selectedIndexString);
+	if (selectedIndexString[0] < '0' || selectedIndexString[0] > '9')
+	{
+		std::cout << "Invalid index selected" << std::endl;
+		return;
+	}
 	ss << selectedIndexString;
 	ss >> selectedIndex;
 	if (selectedIndex > 7 || (_isFull == false && selectedIndex >= _contactIndex))
@@ -86,48 +97,48 @@ void PhoneBook::PrintContactsList(size_t i)
 
 	contact = _contacts[i];
 
-	// 1. index
-	std::cout << std::setfill(' ') << std::setw(10) << i << " | ";
+	// 1. Print index
+	std::cout << std::setw(10) << i << " | ";
 
-	// 2. first name
+	// 2. Print first name
 	str = contact.GetFirstName();
 	if (str.size() >= 10)
 	{
 		str[9] = '.';
 		str.resize(10);
 	}
-	std::cout << std::setfill(' ') << std::setw(10) << str << " | ";
+	std::cout << std::setw(10) << str << " | ";
 
-	// 3. last name
+	// 3. Print last name
 	str = contact.GetLastName();
 	if (str.size() >= 10)
 	{
 		str[9] = '.';
 		str.resize(10);
 	}
-	std::cout << std::setfill(' ') << std::setw(10) << str << " | ";
+	std::cout << std::setw(10) << str << " | ";
 
-	// 4. nickname
+	// 4. Print nickname
 	str = contact.GetNickName();
 	if (str.size() >= 10)
 	{
 		str[9] = '.';
 		str.resize(10);
 	}
-	std::cout << std::setfill(' ') << std::setw(10) << str << std::endl;
+	std::cout << std::setw(10) << str << std::endl;
 }
 
-void PhoneBook::PrintContactInfo(size_t i)
+void PhoneBook::PrintContactInfo(size_t selectedIndex)
 {
-	std::cout << "First name : " << _contacts[i].GetFirstName() << std::endl;
-	std::cout << "Last name : " << _contacts[i].GetLastName() << std::endl;
-	std::cout << "Nickname : " << _contacts[i].GetNickName() << std::endl;
-	std::cout << "Phone Number : " << _contacts[i].GetPhoneNumber() << std::endl;
-	std::cout << "Darkest secret : " << _contacts[i].GetDarkestSecret() << std::endl;
+	std::cout << "First name : " << _contacts[selectedIndex].GetFirstName() << std::endl;
+	std::cout << "Last name : " << _contacts[selectedIndex].GetLastName() << std::endl;
+	std::cout << "Nickname : " << _contacts[selectedIndex].GetNickName() << std::endl;
+	std::cout << "Phone Number : " << _contacts[selectedIndex].GetPhoneNumber() << std::endl;
+	std::cout << "Darkest secret : " << _contacts[selectedIndex].GetDarkestSecret() << std::endl;
 }
 
 int PhoneBook::Exit()
 {
-	std::cout << "Exit" << std::endl;
+	std::cout << "EXIT" << std::endl;
 	return 0;
 }

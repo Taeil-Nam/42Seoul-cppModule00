@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstdio>
 #include "PhoneBook.h"
 #include "Contact.h"
 

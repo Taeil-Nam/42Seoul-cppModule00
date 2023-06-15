@@ -2,6 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <cstdio>
 #include "PhoneBook.h"
 
 PhoneBook::PhoneBook() : _contactIndex(0), _contact(NULL), _isFull(false) {}

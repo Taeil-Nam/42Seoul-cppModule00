@@ -12,6 +12,8 @@ public:
 	void PrintContactInfo(size_t i);
 	int Exit();
 private:
+	void DeleteEof();
+private:
 	Contact _contacts[8];
 	size_t _contactIndex;
 	Contact* _contact;

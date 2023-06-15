@@ -14,7 +14,11 @@ int main()
 		std::getline(std::cin, input);
 
 		if (std::cin.eof())
-			break;
+		{
+			std::clearerr(stdin);
+			std::cin.clear();
+			std::cout << std::endl;
+		}
 		else if (input == "ADD")
 			phoneBook.Add();
 		else if (input == "SEARCH")
@@ -22,7 +26,7 @@ int main()
 		else if (input == "EXIT")
 			return phoneBook.Exit();
 		else
-			std::cout << "Not support command: " << input << std::endl;
+			std::cout << "Not supported command: " << input << std::endl;
 
 		std::cout << std::endl;
 	}

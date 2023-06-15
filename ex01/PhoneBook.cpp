@@ -14,10 +14,15 @@ void PhoneBook::Add()
 	contactBackup = *(_contact);
 
 	_contact->SetFirstName();
+	DeleteEof();
 	_contact->SetLastName();
+	DeleteEof();
 	_contact->SetNickName();
+	DeleteEof();
 	_contact->SetPhoneNumber();
+	DeleteEof();
 	_contact->SetDarkestSecret();
+	DeleteEof();
 
 	if (IsEmptyContact(_contact) == true)
 	{
@@ -74,6 +79,7 @@ void PhoneBook::Search()
 	// 2. Select index from user
 	std::cout << "Select index : ";
 	std::getline(std::cin, selectedIndexString);
+	DeleteEof();
 	if (selectedIndexString[0] < '0' || selectedIndexString[0] > '9')
 	{
 		std::cout << "Invalid index selected" << std::endl;
@@ -141,4 +147,14 @@ int PhoneBook::Exit()
 {
 	std::cout << "EXIT" << std::endl;
 	return 0;
+}
+
+void PhoneBook::DeleteEof()
+{
+	if (std::cin.eof())
+	{
+		std::clearerr(stdin);
+		std::cin.clear();
+		std::cout << std::endl;
+	}
 }

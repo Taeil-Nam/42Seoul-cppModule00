@@ -109,7 +109,7 @@ void PhoneBook::PrintContactsList(size_t i)
 
 	// 2. Print first name
 	str = contact.GetFirstName();
-	if (str.size() >= 10)
+	if (str.size() > 10)
 	{
 		str[9] = '.';
 		str.resize(10);
@@ -118,7 +118,7 @@ void PhoneBook::PrintContactsList(size_t i)
 
 	// 3. Print last name
 	str = contact.GetLastName();
-	if (str.size() >= 10)
+	if (str.size() > 10)
 	{
 		str[9] = '.';
 		str.resize(10);
@@ -127,7 +127,7 @@ void PhoneBook::PrintContactsList(size_t i)
 
 	// 4. Print nickname
 	str = contact.GetNickName();
-	if (str.size() >= 10)
+	if (str.size() > 10)
 	{
 		str[9] = '.';
 		str.resize(10);

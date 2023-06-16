@@ -64,7 +64,7 @@ void PhoneBook::Search()
 		return;
 	}
 
-	if (_isFull)
+	if (_isFull == true)
 		contactsSize =	8;
 	else
 		contactsSize = _contactIndex;

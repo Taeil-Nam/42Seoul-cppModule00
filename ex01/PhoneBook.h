@@ -9,7 +9,6 @@ public:
 	void Search();
 	int Exit();
 private:
-	bool IsEmptyContact(Contact* contact);
 	void PrintContactsList(size_t i);
 	void PrintContactInfo(size_t i);
 	void DeleteEof();

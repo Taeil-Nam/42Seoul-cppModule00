@@ -7,6 +7,7 @@
 
 PhoneBook::PhoneBook() : _contactIndex(0), _contact(NULL), _isFull(false) {}
 
+/*** Public ***/
 void PhoneBook::Add()
 {
 	Contact contactBackup;
@@ -14,41 +15,63 @@ void PhoneBook::Add()
 	_contact = &(_contacts[_contactIndex]);
 	contactBackup = *(_contact);
 
+	// 1. FirstName
 	_contact->SetFirstName();
 	DeleteEof();
-	_contact->SetLastName();
-	DeleteEof();
-	_contact->SetNickName();
-	DeleteEof();
-	_contact->SetPhoneNumber();
-	DeleteEof();
-	_contact->SetDarkestSecret();
-	DeleteEof();
-
-	if (IsEmptyContact(_contact) == true)
+	if (_contact->GetFirstName() == "")
 	{
 		*(_contact) = contactBackup;
 		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
 		return;
 	}
-	else
-	{
-		_contactIndex++;
-		if (_contactIndex >= 8)
-		{
-			_isFull = true;
-			_contactIndex = 0;
-		}
-	}
-}
 
-bool PhoneBook::IsEmptyContact(Contact* contact)
-{
-	if (contact->GetFirstName() == "" || contact->GetLastName() == ""
-		|| contact->GetNickName() == "" || contact->GetPhoneNumber() == ""
-		|| contact->GetDarkestSecret() == "")
-		return true;
-	return false;
+	// 2. LastName
+	_contact->SetLastName();
+	DeleteEof();
+	if (_contact->GetLastName() == "")
+	{
+		*(_contact) = contactBackup;
+		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
+		return;
+	}
+
+	// 3. NickName
+	_contact->SetNickName();
+	DeleteEof();
+	if (_contact->GetNickName() == "")
+	{
+		*(_contact) = contactBackup;
+		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
+		return;
+	}
+
+	// 4.PhoneNumber
+	_contact->SetPhoneNumber();
+	DeleteEof();
+	if (_contact->GetPhoneNumber() == "")
+	{
+		*(_contact) = contactBackup;
+		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
+		return;
+	}
+
+	// 5. DarkestSecret
+	_contact->SetDarkestSecret();
+	DeleteEof();
+	if (_contact->GetDarkestSecret() == "")
+	{
+		*(_contact) = contactBackup;
+		std::cout << "Not Added: There is empty contents in contact!" << std::endl;
+		return;
+	}
+	
+	// Prepare Next Contact
+	_contactIndex++;
+	if (_contactIndex >= 8)
+	{
+		_isFull = true;
+		_contactIndex = 0;
+	}
 }
 
 void PhoneBook::Search()
@@ -58,12 +81,14 @@ void PhoneBook::Search()
 	size_t selectedIndex;
 	std::stringstream ss;
 
+	// PhoneBook is empty
 	if (_isFull == false && _contactIndex == 0)
 	{
 		std::cout << "There is no contact. You should add contact first." << std::endl;
 		return;
 	}
 
+	// Set ContactSize
 	if (_isFull == true)
 		contactsSize =	8;
 	else
@@ -81,6 +106,8 @@ void PhoneBook::Search()
 	std::cout << "Select index : ";
 	std::getline(std::cin, selectedIndexString);
 	DeleteEof();
+
+	// 2-1. Wrong Index Number
 	if (selectedIndexString[0] < '0' || selectedIndexString[0] > '9')
 	{
 		std::cout << "Invalid index selected" << std::endl;
@@ -93,10 +120,18 @@ void PhoneBook::Search()
 		std::cout << "Invalid index selected" << std::endl;
 		return;
 	}
+	// 2-2. Correct Index Number
 	else
 		PrintContactInfo(selectedIndex);
 }
 
+int PhoneBook::Exit()
+{
+	std::cout << "EXIT" << std::endl;
+	return 0;
+}
+
+/*** Private ***/
 void PhoneBook::PrintContactsList(size_t i)
 {
 	Contact contact;
@@ -104,10 +139,10 @@ void PhoneBook::PrintContactsList(size_t i)
 
 	contact = _contacts[i];
 
-	// 1. Print index
+	// 1. Print Index
 	std::cout << std::setw(10) << i << " | ";
 
-	// 2. Print first name
+	// 2. Print FirstName
 	str = contact.GetFirstName();
 	if (str.size() > 10)
 	{
@@ -116,7 +151,7 @@ void PhoneBook::PrintContactsList(size_t i)
 	}
 	std::cout << std::setw(10) << str << " | ";
 
-	// 3. Print last name
+	// 3. Print LastName
 	str = contact.GetLastName();
 	if (str.size() > 10)
 	{
@@ -125,7 +160,7 @@ void PhoneBook::PrintContactsList(size_t i)
 	}
 	std::cout << std::setw(10) << str << " | ";
 
-	// 4. Print nickname
+	// 4. Print NickName
 	str = contact.GetNickName();
 	if (str.size() > 10)
 	{
@@ -142,12 +177,6 @@ void PhoneBook::PrintContactInfo(size_t selectedIndex)
 	std::cout << "Nickname : " << _contacts[selectedIndex].GetNickName() << std::endl;
 	std::cout << "Phone Number : " << _contacts[selectedIndex].GetPhoneNumber() << std::endl;
 	std::cout << "Darkest secret : " << _contacts[selectedIndex].GetDarkestSecret() << std::endl;
-}
-
-int PhoneBook::Exit()
-{
-	std::cout << "EXIT" << std::endl;
-	return 0;
 }
 
 void PhoneBook::DeleteEof()
